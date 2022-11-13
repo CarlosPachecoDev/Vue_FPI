@@ -79,7 +79,8 @@ export const addProduct = async (product, files) => {
 };
 
 const pushImagesProduct = (idProduct, files) => {
-  const numFiles = files.lenght;
+  const numFiles = files.length;
+
   let counter = 0;
   files.forEach((file) => {
     const storageRef = ref(storage, idProduct + "/" + file.name);
