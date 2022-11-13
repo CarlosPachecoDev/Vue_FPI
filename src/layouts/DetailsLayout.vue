@@ -20,7 +20,7 @@
             </q-toolbar-title>
           </q-toolbar>
         </div>
-        <div class="col-10 col-md-5 col-lg-3">
+        <div class="col-10 col-lg-3">
           <q-input
             color="lime-10"
             bg-color="white"
@@ -51,8 +51,8 @@
           >
             <q-route-tab to="/" label="Inicio" />
             <q-route-tab
+              to="/page3"
               icon="ion-add-circle-outline"
-              @click="useDataStore().changeShowNewProductDialog(true)"
               :ripple="false"
             />
             <q-route-tab
@@ -64,8 +64,6 @@
         </div>
       </div>
     </q-header>
-    <!-- MENU DESKTOP-->
-    <MenuDesktop class="desktop-only" />
     <!-- MENU MOBILE-->
     <q-drawer
       v-model="menu_mobile"
@@ -117,8 +115,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { useDataStore } from "src/stores/dataStore";
-import MenuDesktop from "src/components/LayoutComponents/MenuDesktop.vue";
 const search = ref("");
 const menu_mobile = ref(false);
 </script>

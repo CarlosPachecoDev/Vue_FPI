@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page>
     <div class="row justify-center q-gutter-x-md mobile-only q-mt-md">
       <div class="col-8">
         <q-select
@@ -22,7 +22,7 @@
           no-icon-animation
         >
           <q-list style="width: 200px">
-            <q-card class="options-container q-mt-lg bg-white" bordered>
+            <q-card flat class="options-container bg-white">
               <q-card-section class="bg-info">
                 <div class="text-subtitle2 text-weight-bold text-white">
                   Marca
@@ -97,7 +97,7 @@
                 </q-list>
               </q-card-section>
             </q-card>
-            <q-card class="options-container q-mt-lg" bordered>
+            <q-card class="options-container" flat>
               <q-card-section class="bg-info">
                 <div class="text-subtitle2 text-weight-bold text-white">
                   Sistema
@@ -148,7 +148,7 @@
                 </q-list>
               </q-card-section>
             </q-card>
-            <q-card class="options-container q-mt-lg" bordered>
+            <q-card class="options-container" flat>
               <q-card-section class="bg-info">
                 <div class="text-subtitle2 text-weight-bold text-white">
                   Pantalla
@@ -203,18 +203,88 @@
         </q-btn-dropdown>
       </div>
     </div>
+
+    <!--CARDS DE ARTÍCULOS-->
+    <div
+      class="row q-mt-md q-gutter-y-md"
+      :class="{
+        'q-ml-xl': $q.platform.is.desktop,
+      }"
+    >
+      <div
+        class="col-6 col-lg-3"
+        :class="{
+          'q-px-xs': $q.platform.is.mobile,
+          'q-px-md': $q.platform.is.desktop,
+        }"
+        v-for="phone in LPhones"
+        :key="phone.id"
+      >
+        <q-card class="shadow-24">
+          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+            <div class="absolute-bottom">
+              <div class="text-subtitle1 text-weight-bolder">
+                {{ phone.name }}
+              </div>
+              <div class="text-subtitle2">$ {{ phone.price }}</div>
+            </div>
+          </q-img>
+          <q-card-actions align="center">
+            <q-btn
+              no-caps
+              stack
+              flat
+              padding="8px"
+              icon="fa-solid fa-cart-plus"
+              color="purple-13"
+              dense
+              :ripple="{ color: 'yellow' }"
+            >
+              Comprar</q-btn
+            >
+            <q-btn
+              no-caps
+              stack
+              flat
+              padding="8px"
+              icon="fa-solid fa-circle-info"
+              color="purple-13"
+              dense
+              :ripple="{ color: 'yellow' }"
+              :to="'/details/producto' + phone.id"
+            >
+              Detalles</q-btn
+            >
+          </q-card-actions>
+        </q-card>
+      </div>
+    </div>
+    <div class="q-pa-lg flex flex-center q-mt-xl">
+      <q-pagination
+        v-model="current"
+        color="purple-13"
+        :max="5"
+        boundary-links
+      />
+    </div>
+    <NewProduct v-if="showNewProductDialog" />
   </q-page>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { getProducts } from "src/boot/db";
+import { useDataStore } from "stores/dataStore";
+import { storeToRefs } from "pinia";
+import NewProduct from "src/components/NewProduct.vue";
+const { showNewProductDialog } = storeToRefs(useDataStore());
+
 let sort_by = ref("");
 const options = ref(["Precio", "XXXX", "XXXX"]);
-const thumbStyle = ref({
-  right: "2px",
-  borderRadius: "5px",
-  backgroundColor: "#01d5ff",
-  width: "5px",
-  opacity: 0.75,
-});
+let current = ref(1);
+
+let LPhones = ref([]);
+getProducts(LPhones.value);
 </script>
+
+<style scoped></style>
