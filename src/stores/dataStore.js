@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 export const useDataStore = defineStore("dataStore", {
   state: () => ({
+    isDataLoaded: false,
     showNewProductDialog: false,
     phones: [],
   }),

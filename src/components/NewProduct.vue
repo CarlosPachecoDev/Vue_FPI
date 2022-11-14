@@ -404,6 +404,7 @@ const newProduct = ref({
     name: "",
     phone: "",
   },
+  imagesURL: []
 });
 
 const photos = ref(null);

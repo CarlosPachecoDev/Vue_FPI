@@ -221,14 +221,16 @@
         :key="phone.id"
       >
         <q-card class="shadow-24">
-          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-            <div class="absolute-bottom">
-              <div class="text-subtitle1 text-weight-bolder">
-                {{ phone.name }}
+          <q-card-section>
+            <q-img :src="phone.imagesURL[0]">
+              <div class="absolute-bottom">
+                <div class="text-subtitle1 text-weight-bolder">
+                  {{ phone.name }}
+                </div>
+                <div class="text-subtitle2">$ {{ phone.price }}</div>
               </div>
-              <div class="text-subtitle2">$ {{ phone.price }}</div>
-            </div>
-          </q-img>
+            </q-img>
+          </q-card-section>
           <q-card-actions align="center">
             <q-btn
               no-caps
@@ -272,7 +274,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { getProducts } from "src/boot/db";
 import { useDataStore } from "stores/dataStore";
 import { storeToRefs } from "pinia";
@@ -284,7 +286,23 @@ const options = ref(["Precio", "XXXX", "XXXX"]);
 let current = ref(1);
 
 let LPhones = ref([]);
-getProducts(LPhones.value);
+const store = useDataStore();
+watch(
+  () => store.isDataLoaded,
+  (isDataLoaded) => {
+    LPhones.value = store.phones;
+  }
+);
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-img {
+  width: 10vw;
+  max-width: 19vw;
+  margin: auto;
+}
+
+.img {
+  width: 100%;
+}
+</style>
