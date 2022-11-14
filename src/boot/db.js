@@ -36,10 +36,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-export const getBrands = async (saveArray) => {
+export const getBrands = async () => {
   const response = await getDocs(collection(db, "marcas"));
   response.forEach((doc) => {
-    saveArray.push({
+    useDataStore().brands.push({
       id: doc.id,
       name: doc.data().name,
       value: false,
@@ -47,10 +47,10 @@ export const getBrands = async (saveArray) => {
   });
 };
 
-export const getSystems = async (saveArray) => {
+export const getSystems = async () => {
   const response = await getDocs(collection(db, "sistemas"));
   response.forEach((doc) => {
-    saveArray.push({
+    useDataStore().systems.push({
       id: doc.id,
       name: doc.data().name,
       value: false,
@@ -58,10 +58,10 @@ export const getSystems = async (saveArray) => {
   });
 };
 
-export const getScreenSizes = async (saveArray) => {
+export const getScreenSizes = async () => {
   const response = await getDocs(collection(db, "pantallas"));
   response.forEach((doc) => {
-    saveArray.push({
+    useDataStore().screens.push({
       id: doc.id,
       name: doc.data().size,
       value: false,

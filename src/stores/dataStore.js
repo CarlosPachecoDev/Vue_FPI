@@ -5,6 +5,10 @@ export const useDataStore = defineStore("dataStore", {
     isDataLoaded: false,
     showNewProductDialog: false,
     phones: [],
+    brands: [],
+    systems: [],
+    screens: [],
+    sortBy: [],
   }),
 
   getters: {

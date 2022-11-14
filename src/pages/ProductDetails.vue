@@ -12,36 +12,19 @@
         transition-next="scale"
         swipeable
         animated
-        control-color="white"
-        navigation
-        padding
-        arrows
         height="50vh"
-        class="bg-primary text-white shadow-1 rounded-borders"
+        class="shadow-1 rounded-borders"
+        :autoplay="4000"
+        thumbnails
+        infinite
       >
-        <q-carousel-slide name="style" class="column no-wrap flex-center">
-          <q-icon name="style" size="56px" />
-          <div class="q-mt-md text-center">
-            {{ lorem }}
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide name="tv" class="column no-wrap flex-center">
-          <q-icon name="live_tv" size="56px" />
-          <div class="q-mt-md text-center">
-            {{ lorem }}
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide name="layers" class="column no-wrap flex-center">
-          <q-icon name="layers" size="56px" />
-          <div class="q-mt-md text-center">
-            {{ lorem }}
-          </div>
-        </q-carousel-slide>
-        <q-carousel-slide name="map" class="column no-wrap flex-center">
-          <q-icon name="terrain" size="56px" />
-          <div class="q-mt-md text-center">
-            {{ lorem }}
-          </div>
+        <q-carousel-slide
+          v-for="(value, index) in product.imagesURL"
+          :key="index"
+          :name="index + 1"
+          :img-src="value"
+          style="height: 100%; width: auto; max-width: 23rem; margin: 0 auto"
+        >
         </q-carousel-slide>
       </q-carousel>
     </div>
@@ -57,12 +40,14 @@
       <div class="row q-pt-md q-mt-xl seller-container bg-positive text-white">
         <div class="col-6 text-center">
           <p class="name-seller q-pl-md q-pt-lg">
-            <span class="text-weight-bold">Vendedor:</span> {{ product.seller }}
+            <span class="text-weight-bold">Vendedor:</span>
+            {{ product.seller_info.name }}
           </p>
         </div>
         <div class="col-6 text-center">
           <p class="phone-seller q-pr-sm">
-            <span class="text-weight-bold">Teléfono:</span> {{ product.phone }}
+            <span class="text-weight-bold">Teléfono:</span>
+            {{ product.seller_info.phone }}
           </p>
         </div>
       </div>
@@ -136,14 +121,35 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useDataStore } from "src/stores/dataStore";
 import { useRoute } from "vue-router";
 
-const product = ref(useDataStore().getProductById(useRoute().params.id));
-console.log(useRoute().params.id);
-console.log(product.value);
-const slide = ref("style");
+const slide = ref(1);
+const product = ref({
+  name: "",
+  date: "",
+  price: "",
+  specs: {
+    state: "",
+    brand: "",
+    model: "",
+    screen: "",
+    RAM: "",
+    ROM: "",
+    system: "",
+  },
+  description: "",
+  seller_info: {
+    name: "",
+    phone: "",
+  },
+  imagesURL: [],
+});
+onMounted(() => {
+  product.value = null;
+  product.value = useDataStore().getProductById(useRoute().params.id);
+});
 </script>
 
 <style scoped>

@@ -149,6 +149,7 @@
                 v-if="photosURL.length"
                 transition-prev="scale"
                 transition-next="scale"
+                swipeable
                 animated
                 v-model="slide"
                 :autoplay="4000"
@@ -202,7 +203,7 @@
                   <q-radio
                     class="text-white text-subtitle1 text-weight-bold"
                     size="xl"
-                    v-model="newProduct.specs.state"
+                    v-model="newProduct.specs.Estado"
                     checked-icon="task_alt"
                     unchecked-icon="panorama_fish_eye"
                     val="Nuevo"
@@ -211,7 +212,7 @@
                   <q-radio
                     class="text-white text-subtitle1 text-weight-bold"
                     size="xl"
-                    v-model="newProduct.specs.state"
+                    v-model="newProduct.specs.Estado"
                     checked-icon="task_alt"
                     unchecked-icon="panorama_fish_eye"
                     val="Usado"
@@ -228,7 +229,7 @@
                 label-color="purple-13"
                 color="primary"
                 outlined
-                v-model="newProduct.specs.brand"
+                v-model="newProduct.specs.Marca"
                 label="Marca"
                 lazy-rules
                 :rules="[
@@ -245,7 +246,7 @@
                 label-color="purple-13"
                 color="primary"
                 outlined
-                v-model="newProduct.specs.model"
+                v-model="newProduct.specs.Modelo"
                 label="Modelo"
                 lazy-rules
                 :rules="[
@@ -262,7 +263,7 @@
                 label-color="purple-13"
                 color="primary"
                 outlined
-                v-model="newProduct.specs.screen"
+                v-model="newProduct.specs.Pantalla"
                 label="Pantalla"
                 lazy-rules
                 :rules="[
@@ -313,7 +314,7 @@
                 label-color="purple-13"
                 color="primary"
                 outlined
-                v-model="newProduct.specs.system"
+                v-model="newProduct.specs.Sistema"
                 label="Sistema"
                 lazy-rules
                 :rules="[
@@ -391,20 +392,20 @@ const newProduct = ref({
   date: "",
   price: "",
   specs: {
-    state: "",
-    brand: "",
-    model: "",
-    screen: "",
+    Estado: "",
+    Marca: "",
+    Modelo: "",
+    Pantalla: "",
     RAM: "",
     ROM: "",
-    system: "",
+    Sistema: "",
   },
   description: "",
   seller_info: {
     name: "",
     phone: "",
   },
-  imagesURL: []
+  imagesURL: [],
 });
 
 const photos = ref(null);

@@ -22,185 +22,73 @@
           no-icon-animation
         >
           <q-list style="width: 200px">
-            <q-card flat class="options-container bg-white">
-              <q-card-section class="bg-info">
-                <div class="text-subtitle2 text-weight-bold text-white">
-                  Marca
-                </div>
-              </q-card-section>
-
-              <q-separator color="white" />
-              <q-card-section>
-                <q-list dense>
-                  <q-item>
-                    <q-item-section>
-                      <q-checkbox
-                        right-label
-                        v-model="samsung"
-                        label="Samsung"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-checkbox
-                        right-label
-                        v-model="huawei"
-                        label="Huawei"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar top>
-                      <q-checkbox
-                        right-label
-                        v-model="nokia"
-                        label="Nokia"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section avatar top>
-                      <q-checkbox
-                        right-label
-                        v-model="iphone"
-                        label="iPhone"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section avatar top
-                      ><q-checkbox
-                        right-label
-                        v-model="xiaomi"
-                        label="Xiaomi"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card-section>
-            </q-card>
-            <q-card class="options-container" flat>
-              <q-card-section class="bg-info">
-                <div class="text-subtitle2 text-weight-bold text-white">
-                  Sistema
-                </div>
-              </q-card-section>
-
-              <q-separator color="white" />
-              <q-card-section>
-                <q-list dense>
-                  <q-item>
-                    <q-item-section>
-                      <q-checkbox
-                        right-label
-                        v-model="android"
-                        label="Android"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-checkbox
-                        right-label
-                        v-model="windows"
-                        label="Windows"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar top>
-                      <q-checkbox
-                        right-label
-                        v-model="ios"
-                        label="iOS"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card-section>
-            </q-card>
-            <q-card class="options-container" flat>
-              <q-card-section class="bg-info">
-                <div class="text-subtitle2 text-weight-bold text-white">
-                  Pantalla
-                </div>
-              </q-card-section>
-
-              <q-separator color="white" />
-              <q-card-section>
-                <q-list dense>
-                  <q-item>
-                    <q-item-section>
-                      <q-checkbox
-                        right-label
-                        v-model="six_inch"
-                        label="6.0"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar>
-                      <q-checkbox
-                        right-label
-                        v-model="five_dot_inch"
-                        label="5.5"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item>
-                    <q-item-section avatar top>
-                      <q-checkbox
-                        right-label
-                        v-model="five_inch"
-                        label="5"
-                        checked-icon="task_alt"
-                        color="teal"
-                        unchecked-icon="radio_button_unchecked"
-                      />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card-section>
-            </q-card>
+            <SortingOptionsCard />
           </q-list>
         </q-btn-dropdown>
+      </div>
+    </div>
+    <div class="row q-mt-md q-ml-xl justify-evenly items-center desktop-only">
+      <div class="col-5">
+        <div class="row q-gutter-x-md price-container bg-purple-13 text-white">
+          <div class="col-auto self-center text-h6">
+            <span>Precio:</span>
+          </div>
+          <div class="col-4">
+            <q-input
+              dark
+              type="number"
+              rounded
+              outlined
+              bg-color="positive"
+              v-model.number="precio_desde"
+              label="Desde"
+              label-color="white"
+            >
+              <template v-slot:prepend>
+                <q-icon name="attach_money" color="white" />
+              </template>
+            </q-input>
+          </div>
+          <div class="col-4">
+            <q-input
+              dark
+              type="number"
+              rounded
+              outlined
+              bg-color="positive"
+              v-model.number="precio_hasta"
+              label="Hasta"
+              label-color="white"
+            >
+              <template v-slot:prepend>
+                <q-icon name="attach_money" color="white" />
+              </template>
+            </q-input>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div
+          class="row q-gutter-x-md sort-by-container bg-purple-13 text-white"
+        >
+          <div class="col-auto self-center text-h6">
+            <span>Ordenar por:</span>
+          </div>
+          <div class="col-auto">
+            <q-btn-toggle
+              no-caps
+              clearable
+              color="purple-2"
+              text-color="black"
+              v-model="togleSort"
+              toggle-color="positive"
+              :options="[
+                { label: 'Fecha', value: 'date' },
+                { label: 'Precio', value: 'price' },
+              ]"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -255,7 +143,7 @@
               :ripple="{ color: 'yellow' }"
               :to="'/details/producto' + phone.id"
             >
-              Detalles</q-btn
+              Detalles {{ productos }}</q-btn
             >
           </q-card-actions>
         </q-card>
@@ -274,35 +162,57 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { getProducts } from "src/boot/db";
+import { ref, watch, onMounted, computed } from "vue";
 import { useDataStore } from "stores/dataStore";
 import { storeToRefs } from "pinia";
 import NewProduct from "src/components/NewProduct.vue";
+import SortingOptionsCard from "src/components/SortingOptionsCard.vue";
 const { showNewProductDialog } = storeToRefs(useDataStore());
 
-let sort_by = ref("");
+const precio_desde = ref(0);
+const precio_hasta = ref(0);
+const togleSort = ref(null);
+const sort_by = ref("");
 const options = ref(["Precio", "XXXX", "XXXX"]);
 let current = ref(1);
 
 let LPhones = ref([]);
 const store = useDataStore();
+
+onMounted(() => {
+  LPhones.value = store.phones;
+});
+
 watch(
-  () => store.isDataLoaded,
-  (isDataLoaded) => {
-    LPhones.value = store.phones;
+  () => store.sortBy,
+  (sortBy) => {
+    const sortByArray = Object.values(sortBy);
+    if (sortByArray.length) {
+      LPhones.value = store.phones.filter(
+        (phone) =>
+          sortByArray.includes(phone.specs.Marca) ||
+          sortByArray.includes(phone.specs.Sistema.split(" ")[0]) ||
+          sortByArray.includes(phone.specs.Pantalla)
+      );
+    } else {
+      LPhones.value = store.phones;
+    }
   }
 );
 </script>
 
 <style scoped>
-.container-img {
-  width: 10vw;
-  max-width: 19vw;
-  margin: auto;
+.price-container {
+  border: 2px solid black;
+  margin: 25px 0 60px 0;
+  padding: 10px 10px 10px 40px;
+  border-radius: 90% 10% 91% 9% / 10% 89% 11% 90%;
 }
 
-.img {
-  width: 100%;
+.sort-by-container {
+  border: 2px solid black;
+  margin: 25px 0 60px 0;
+  padding: 20px 0px 20px 10px;
+  border-radius: 90% 10% 91% 9% / 10% 89% 11% 90%;
 }
 </style>
