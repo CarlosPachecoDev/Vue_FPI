@@ -42,7 +42,7 @@ import { ref, watch } from "vue";
 const sortBy = ref([]);
 
 watch(sortBy, () => {
-  useDataStore().sortBy = Object.values(sortBy.value);
+  useDataStore().sortBySpecs = Object.values(sortBy.value);
 });
 
 const optionsFilter = ref({

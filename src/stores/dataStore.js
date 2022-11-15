@@ -8,7 +8,9 @@ export const useDataStore = defineStore("dataStore", {
     brands: [],
     systems: [],
     screens: [],
-    sortBy: [],
+    sortBySpecs: [],
+    toggleSortBy: String,
+    priceRange: [],
   }),
 
   getters: {
@@ -18,11 +20,11 @@ export const useDataStore = defineStore("dataStore", {
   },
 
   actions: {
-    increment() {
-      this.counter++;
-    },
     changeShowNewProductDialog(newValue) {
       this.showNewProductDialog = newValue;
+    },
+    setPriceRange(newValues) {
+      this.priceRange = newValues;
     },
   },
 });
