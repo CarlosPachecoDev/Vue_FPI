@@ -45,9 +45,7 @@
                 v-model="newProduct.name"
                 label="Nombre"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-input
@@ -63,7 +61,9 @@
                 prefix="$"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
+                  (val) =>
+                    (val && val.length > 0 && !isNaN(val)) ||
+                    'Campo numérico requerido',
                 ]"
                 clearable
               />
@@ -80,9 +80,7 @@
                 v-model="newProduct.date"
                 label="Fecha"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-card-section>
@@ -104,9 +102,7 @@
                 v-model="newProduct.description"
                 label="Descripción del producto"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-card-section>
@@ -203,7 +199,7 @@
                   <q-radio
                     class="text-white text-subtitle1 text-weight-bold"
                     size="xl"
-                    v-model="newProduct.specs.Estado"
+                    v-model="estado"
                     checked-icon="task_alt"
                     unchecked-icon="panorama_fish_eye"
                     val="Nuevo"
@@ -212,7 +208,7 @@
                   <q-radio
                     class="text-white text-subtitle1 text-weight-bold"
                     size="xl"
-                    v-model="newProduct.specs.Estado"
+                    v-model="estado"
                     checked-icon="task_alt"
                     unchecked-icon="panorama_fish_eye"
                     val="Usado"
@@ -232,9 +228,7 @@
                 v-model="newProduct.specs.Marca"
                 label="Marca"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-input
@@ -249,9 +243,7 @@
                 v-model="newProduct.specs.Modelo"
                 label="Modelo"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-input
@@ -267,7 +259,9 @@
                 label="Pantalla"
                 lazy-rules
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
+                  (val) =>
+                    (val && val.length > 0 && !isNaN(val)) ||
+                    'Campo numérico requerido',
                 ]"
                 clearable
               />
@@ -283,9 +277,7 @@
                 v-model="newProduct.specs.RAM"
                 label="RAM"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-input
@@ -300,9 +292,7 @@
                 v-model="newProduct.specs.ROM"
                 label="ROM"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-input
@@ -317,9 +307,7 @@
                 v-model="newProduct.specs.Sistema"
                 label="Sistema"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-card-section>
@@ -339,9 +327,7 @@
                 v-model="newProduct.seller_info.name"
                 label="Nombre"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
               <q-input
@@ -356,9 +342,7 @@
                 v-model="newProduct.seller_info.phone"
                 label="Teléfono"
                 lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]"
+                :rules="[(val) => (val && val.length > 0) || 'Campo requerido']"
                 clearable
               />
             </div>
@@ -386,6 +370,7 @@ import { useDataStore } from "src/stores/dataStore";
 import { addProduct } from "src/boot/db";
 import { useQuasar } from "quasar";
 
+const estado = ref("");
 const $q = useQuasar();
 const newProduct = ref({
   name: "",
@@ -414,7 +399,28 @@ const slide = ref(1);
 const inputFile = ref(null);
 
 function onSubmit() {
-  addProduct(newProduct.value, photos.value);
+  if (!estado.value) {
+    $q.notify({
+      icon: "error",
+      iconSize: "36px",
+      color: "red",
+      message: 'Debe llenar el espacio "Estado"',
+    });
+  } else if (!photosURL.value.length) {
+    $q.notify({
+      icon: "error",
+      iconSize: "36px",
+      color: "red",
+      message: "Debe agregar imagénes del producto",
+    });
+  } else {
+    newProduct.value.price = parseFloat(newProduct.value.price);
+    newProduct.value.specs.Pantalla = parseFloat(
+      newProduct.value.specs.Pantalla
+    );
+    newProduct.value.date = new Date(newProduct.value.date);
+    addProduct(newProduct.value, photos.value);
+  }
 }
 
 function addImages() {

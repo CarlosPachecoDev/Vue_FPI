@@ -1,7 +1,9 @@
 <template>
   <div class="row q-mt-md q-ml-xl justify-evenly items-center">
     <div class="col-5">
-      <div class="row q-gutter-x-md price-container bg-purple-13 text-white">
+      <div
+        class="row q-gutter-x-md price-container bg-purple-13 text-white items-center"
+      >
         <div class="col-auto self-center text-h6">
           <span>Precio:</span>
         </div>
@@ -15,7 +17,8 @@
             v-model.number="precio_desde"
             label="Desde"
             label-color="white"
-            @update:model-value="sortByPrice"
+            @update:model-value="sortByPriceRange"
+            :rules="[(val) => val >= 0 || 'Ingresa cantidades positivas']"
           >
             <template v-slot:prepend>
               <q-icon name="attach_money" color="white" />
@@ -32,7 +35,8 @@
             v-model.number="precio_hasta"
             label="Hasta"
             label-color="white"
-            @update:model-value="sortByPrice"
+            @update:model-value="sortByPriceRange"
+            :rules="[(val) => val >= 0 || 'Ingresa cantidades positivas']"
           >
             <template v-slot:prepend>
               <q-icon name="attach_money" color="white" />
@@ -68,19 +72,32 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useDataStore } from "stores/dataStore";
-
+const emit = defineEmits(["resetValues", "sortByToggleValue"]);
 let previousPrices = [];
-const precio_desde = ref(0);
-const precio_hasta = ref(0);
+const precio_desde = ref("");
+const precio_hasta = ref("");
 const togleSort = ref(null);
 
-function sortByPrice(value) {
-  if (precio_desde.value >= 0 && precio_hasta.value >= 0) {
+function sortByPriceRange(value) {
+  if (
+    precio_desde.value >= 0 &&
+    precio_desde.value !== "" &&
+    precio_hasta.value >= 0 &&
+    precio_hasta.value !== ""
+  ) {
     useDataStore().priceRange = [precio_desde.value, precio_hasta.value];
-  } else {
-    useDataStore().setPriceRange(null);
+    useDataStore().isSortByRangeAndToggleActive = true;
+  }
+
+  if (!precio_desde.value || !precio_hasta.value) {
+    emit("resetValues");
+    useDataStore().isSortByRangeAndToggleActive = false;
   }
 }
+
+watch(togleSort, (newValue) => {
+  emit("sortByToggleValue", newValue);
+});
 </script>
 
 <style scoped>

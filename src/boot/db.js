@@ -20,6 +20,7 @@ import Compressor from "compressorjs";
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
+const limitPagination = 8;
 const firebaseConfig = {
   apiKey: "AIzaSyBNqihpN7NrIZuxokJpgL-lZDJxktirC90",
   authDomain: "cellphonestore-1e5c4.firebaseapp.com",
@@ -40,9 +41,8 @@ export const getBrands = async () => {
   const response = await getDocs(collection(db, "marcas"));
   response.forEach((doc) => {
     useDataStore().brands.push({
-      id: doc.id,
       name: doc.data().name,
-      value: false,
+      count: 0,
     });
   });
 };
@@ -51,9 +51,8 @@ export const getSystems = async () => {
   const response = await getDocs(collection(db, "sistemas"));
   response.forEach((doc) => {
     useDataStore().systems.push({
-      id: doc.id,
       name: doc.data().name,
-      value: false,
+      count: 0,
     });
   });
 };
@@ -62,11 +61,36 @@ export const getScreenSizes = async () => {
   const response = await getDocs(collection(db, "pantallas"));
   response.forEach((doc) => {
     useDataStore().screens.push({
-      id: doc.id,
       name: doc.data().size,
-      value: false,
+      count: 0,
     });
   });
+};
+
+let brandsStore = [];
+let systemsStore = [];
+let screensStore = [];
+
+const countSpecs = (product) => {
+  try {
+    useDataStore().brands[brandsStore.indexOf(product.specs.Marca)].count += 1;
+  } catch (error) {
+    //
+  }
+  try {
+    useDataStore().systems[
+      systemsStore.indexOf(product.specs.Sistema.split(" ")[0])
+    ].count++;
+  } catch (error) {
+    //
+  }
+  try {
+    useDataStore().screens[
+      screensStore.indexOf(Math.round(product.specs.Pantalla))
+    ].count++;
+  } catch (error) {
+    //
+  }
 };
 
 // Obtener un producto por su ID
@@ -78,6 +102,8 @@ const getProduct = async (docID) => {
     const product = docSnap.data();
     product.id = docID;
     getImagesProduct(product);
+
+    countSpecs(product);
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
@@ -87,10 +113,14 @@ const getProduct = async (docID) => {
 // Obtener todos los productos
 export const getProducts = async () => {
   const response = await getDocs(collection(db, "products"));
+  brandsStore = useDataStore().brands.map((brand) => brand.name);
+  systemsStore = useDataStore().systems.map((system) => system.name);
+  screensStore = useDataStore().screens.map((screens) => screens.name);
   const idLastDoc = response.size ? response.docs.at(-1).id : 0;
   response.forEach((doc) => {
     const product = {
       id: doc.id,
+      date: doc.data().date,
       name: doc.data().name,
       price: doc.data().price,
       seller_info: doc.data().seller_info,
@@ -98,16 +128,13 @@ export const getProducts = async () => {
       description: doc.data().description,
       imagesURL: [],
     };
+    countSpecs(product);
     getImagesProduct(product);
-    if (product.id === idLastDoc) {
-      useDataStore().isDataLoaded = true;
-    }
   });
 };
 
 const getImagesProduct = (product) => {
   const listRef = ref(storage, product.id);
-  // Find all the prefixes and items.
   listAll(listRef)
     .then((res) => {
       const numImagesProduct = res.items.length;
@@ -153,21 +180,17 @@ const pushImagesProduct = (idProduct, files) => {
       mimeType: "image/jpeg",
       convertTypes: ["image/png", "image/webp"],
       success(fileCompress) {
-        console.log("archivo original:  ", file);
-        console.log("archivo comprimido;   ", fileCompress);
-
         uploadBytes(storageRef, fileCompress).then((snapshot) => {
           counter++;
           if (counter === numFiles) {
             getProduct(idProduct);
+            useDataStore().changeShowNewProductDialog(false);
             Notify.create({
               message: "Producto añadido",
               color: "#c9f42d",
               textColor: "white",
               icon: "ion-add",
             });
-            useDataStore().phones.push();
-            useDataStore().changeShowNewProductDialog(false);
           }
         });
       },

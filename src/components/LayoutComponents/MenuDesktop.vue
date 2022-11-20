@@ -2,8 +2,6 @@
   <q-drawer
     show-if-above
     side="left"
-    elevated
-    bordered
     :mini="miniState"
     :mini-width="40"
     @mouseover="miniState = false"
@@ -35,7 +33,6 @@
 import { ref } from "vue";
 import SortingOptionsCard from "../SortingOptionsCard.vue";
 const miniState = ref(true);
-
 const thumbStyle = ref({
   right: "2px",
   borderRadius: "5px",

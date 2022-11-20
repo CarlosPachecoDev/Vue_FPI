@@ -8,11 +8,6 @@ const routes = [
         name: "Home",
         component: () => import("pages/IndexPage.vue"),
       },
-      {
-        path: "/pagetwo",
-        name: "two",
-        component: () => import("pages/PageTwo.vue"),
-      },
     ],
   },
   {
@@ -23,6 +18,11 @@ const routes = [
         path: "/details/producto:id",
         name: "ProductDetails",
         component: () => import("pages/ProductDetails.vue"),
+      },
+      {
+        path: "/carro",
+        name: "Carrito",
+        component: () => import("pages/CarritoItems.vue"),
       },
     ],
   },

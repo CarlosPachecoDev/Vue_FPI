@@ -27,7 +27,11 @@
               checked-icon="task_alt"
               color="teal"
               unchecked-icon="radio_button_unchecked"
-            />
+            >
+              <q-badge color="positive" align="top" class="q-ml-sm" rounded>{{
+                option.count
+              }}</q-badge>
+            </q-checkbox>
           </q-item-section>
         </q-item>
       </q-list>
@@ -37,13 +41,30 @@
 
 <script setup>
 import { useDataStore } from "src/stores/dataStore";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 const sortBy = ref([]);
+
+onMounted(() => {
+  if (useDataStore().sortBySpecs.length) {
+    sortBy.value = useDataStore().sortBySpecs;
+  } else {
+    sortBy.value = [];
+  }
+});
 
 watch(sortBy, () => {
   useDataStore().sortBySpecs = Object.values(sortBy.value);
 });
+
+watch(
+  () => useDataStore().isSortByRangeAndToggleActive,
+  (newValue) => {
+    if (newValue) {
+      sortBy.value = [];
+    }
+  }
+);
 
 const optionsFilter = ref({
   Marca: useDataStore().brands,
